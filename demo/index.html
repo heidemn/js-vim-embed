@@ -6,7 +6,7 @@
 			background-color: #ccc;
 			position:relative;
 		}
-		#vim {
+		#vim, #vim2 {
 			position:relative;
 			margin:auto;
 			width: 80%;
@@ -28,10 +28,14 @@
 - macros
 	- q{m}{macro}q ; @{m}
 </div>
+
+<div id='vim2'>Second VIM
+</div>
+
 	<script src='../vim.js'></script>
 	<script>
 		vim.edit({
-			el: document.getElementById('vim')
+			el: document.getElementById('vim2')
 		});
 	</script>
 </body>

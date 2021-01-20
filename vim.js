@@ -196,7 +196,13 @@ var specialChars = {
 	backspace: '\b',
 	space: ' ',
 	meta: '',
-	shift: ''
+	shift: '',
+	// MH
+	left: 'h',
+	right: 'l',
+	up: 'k',
+	down: 'j',
+	// MH END
 };
 
 var reverseShiftMap = {};
@@ -211,8 +217,12 @@ for(var i in mousetrap.SHIFT_MAP) {
 Keys.prototype.listen = function(obj) {
 	addListener(obj,'keydown', function(e) {
 		var key = mousetrap.characterFromEvent(e);
+		//console.log('key BEGIN', key);
 		if(e.metaKey) return;
 		if(key === 'ctrl') return;
+		// MH
+		if(key === 'alt') return;
+		// MH END
 		var prefix = '',
 			suffix = '';
 		if(e.ctrlKey) {
@@ -230,8 +240,18 @@ Keys.prototype.listen = function(obj) {
 			e.preventDefault();
 			key = specialChars[key];
 			if(!key || !key.length) return;
+			// MH
+			if (vim.modeName === 'insert' && key.match(/^[hjkl]$/)) {
+				//console.log('abort', key);
+				return; // doesn't work, would insert "h" etc. instead of moving cursor
+			}
+			// MH END
 		}
 		key = prefix + key + suffix;
+		//if (key === 'up') {
+		//	key = ''
+		//}
+		console.log('key END', key);
 		this.fn(key);
 	}.bind(this));
 };
@@ -465,10 +485,20 @@ module.exports = require('./lib/Vim');
    * @return {string}
    */
   function _characterFromEvent(e) {
+      // MH
+      console.log(e.type, e.key, e);
+      if (e.key && e.key.length === 1) {
+          return e.key;
+      }
+      // MH END
 
       // for keypress events we should return the character as is
       if (e.type == 'keypress') {
+          //console.log(e);
+          // MH
           return String.fromCharCode(e.which);
+          //return e.key || String.fromCharCode(e.which);
+          // MH END
       }
 
       // for non keypress events the special maps are needed

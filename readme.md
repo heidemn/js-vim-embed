@@ -2,7 +2,7 @@
 
 Embed js-vim on any web page
 
-##Usage
+## Usage
 
 ```html
 <!DOCYPE html>
@@ -19,3 +19,12 @@ Embed js-vim on any web page
 </html>
 ```
 
+## API
+
+```
+vim.text(): string  // GET
+vim.text(string)    // SET
+
+vim.curDoc.text(): string  // GET
+vim.curDoc.text(string)    // SET
+```
